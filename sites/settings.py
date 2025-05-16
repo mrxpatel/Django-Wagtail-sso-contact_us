@@ -25,14 +25,14 @@ SECRET_KEY = "django-insecure-3!*ks+y3=6mui&7_%@pa_io6gbxzxc^102!uce@t5t*g705pv&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['jaiminsomani.live']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'home',
-    'sites',
+    # Remove the duplicate 'sites' entry
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
@@ -52,10 +52,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Add django.contrib.sites for allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line after SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,6 +71,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+    # Add allauth middleware
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = "sites.urls"
@@ -152,5 +162,51 @@ MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 
 # Static files
-STATIC_ROOT = BASE_DIR / 'static'
-STATICFILES_DIRS = []
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Change this line
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
+# WhiteNoise configuration
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Add these settings at the end of the file
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# Site ID is required for allauth
+SITE_ID = 2
+
+# AllAuth Configuration
+SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_SUBJECT_PREFIX = '[Your Site] '
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'APP': {
+            'client_id': '538849210035-6cn9aki3u7kvom2o326frg7u9g2624ej.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    },
+    'github': {
+         'SCOPE': ['user:email'],
+        'APP': {
+            'client_id': 'Ov23li6CmqRdYckRFzQq',
+            'secret': '60c41cb65d067cd6235123232329d193faa2ea58',
+            'key': ''
+        }
+    }
+}

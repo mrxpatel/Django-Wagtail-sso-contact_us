@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Portfolio{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
 <body class="bg-gray-100 dark:bg-gray-900">
     <nav class="bg-white dark:bg-gray-800 shadow">
@@ -20,6 +22,19 @@
                         <a href="/skills" class="text-gray-900 dark:text-white hover:text-gray-500 px-3 py-2">Skills</a>
                         <a href="/contact" class="text-gray-900 dark:text-white hover:text-gray-500 px-3 py-2">Contact</a>
                     </div>
+                </div>
+                <!-- Add user menu -->
+                <div class="flex items-center">
+                    {% if user.is_authenticated %}
+                        <div class="relative ml-3">
+                            <div class="flex items-center">
+                                <span class="text-gray-900 dark:text-white mr-4">{{ user.email }}</span>
+                                <a href="{% url 'account_logout' %}" class="text-gray-900 dark:text-white hover:text-gray-500 px-3 py-2 bg-red-500 hover:bg-red-600 rounded text-white">Logout</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'account_login' %}" class="text-gray-900 dark:text-white hover:text-gray-500 px-3 py-2 bg-blue-500 hover:bg-blue-600 rounded text-white">Login</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

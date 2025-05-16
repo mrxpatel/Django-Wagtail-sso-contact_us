@@ -12,6 +12,9 @@ urlpatterns = [
     path('admin/', include(wagtailadmin_urls)),
     path('documents/', include(wagtaildocs_urls)),
     
+    # Add this new URL pattern for allauth
+    path('accounts/', include('allauth.urls')),
+    
     # Wagtail's catch-all URL patterns must be last
     path('', include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
