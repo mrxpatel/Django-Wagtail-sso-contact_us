@@ -61,6 +61,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
 ]
 
+# Add the custom social account adapter
+SOCIALACCOUNT_ADAPTER = 'home.adapters.CustomSocialAccountAdapter'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this line after SecurityMiddleware

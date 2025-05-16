@@ -28,6 +28,9 @@
                     {% if user.is_authenticated %}
                         <div class="relative ml-3">
                             <div class="flex items-center">
+                                {% if user.userprofile.profile_picture %}
+                                    <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="h-8 w-8 rounded-full object-cover mr-2">
+                                {% endif %}
                                 <span class="text-gray-900 dark:text-white mr-4">{{ user.email }}</span>
                                 <a href="{% url 'account_logout' %}" class="text-gray-900 dark:text-white hover:text-gray-500 px-3 py-2 bg-red-500 hover:bg-red-600 rounded text-white">Logout</a>
                             </div>
