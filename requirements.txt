@@ -1,0 +1,10 @@
+Django>=5.1,<5.2
+wagtail>=6.4,<6.5
+django-extensions
+djangorestframework
+python-dotenv
+whitenoise
+psycopg2-binary>=2.9.10
+gunicorn>=23.0.0
+Pillow>=10.0.0
+wagtail-modeladmin

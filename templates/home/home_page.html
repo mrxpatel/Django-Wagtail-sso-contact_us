@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block title %}Welcome to My Portfolio{% endblock %}
+
+{% block content %}
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{{ page.title }}</h1>
+        <div class="prose dark:prose-invert max-w-none">
+            {{ page.body|richtext }}
+        </div>
+    </div>
+</div>
+
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Featured Projects Section -->
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{{ page.featured_projects_title }}</h2>
+        <div class="prose dark:prose-invert">
+            {{ page.featured_projects_content|richtext }}
+        </div>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{{ page.skills_title }}</h2>
+        <div class="prose dark:prose-invert">
+            {{ page.skills_content|richtext }}
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{{ page.contact_title }}</h2>
+        <div class="prose dark:prose-invert">
+            {{ page.contact_content|richtext }}
+        </div>
+    </div>
+</div>
+{% endblock %}
