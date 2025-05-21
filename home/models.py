@@ -5,6 +5,8 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.mail import send_mail
+from django.template.response import TemplateResponse
 
 
 class HomePage(Page):
@@ -38,6 +40,27 @@ class HomePage(Page):
             FieldPanel('contact_content'),
         ], heading="Contact Section"),
     ]
+
+    def serve(self, request):
+        if request.method == 'POST':
+            name = request.POST.get('name')
+            email = request.POST.get('email')
+            message = request.POST.get('message')
+            
+            # Send email
+            send_mail(
+                f'Contact Form Submission from {name}',
+                f'Name: {name}\nEmail: {email}\n\nMessage:\n{message}',
+                email,  # From email
+                ['your-email@example.com'],  # Replace with your email address
+                fail_silently=False,
+            )
+            
+            # Add a success message
+            from django.contrib import messages
+            messages.success(request, 'Thank you for your message. We\'ll get back to you soon!')
+            
+        return super().serve(request)
 
     class Meta:
         verbose_name = "Home Page"
